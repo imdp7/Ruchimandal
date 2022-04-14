@@ -2,10 +2,7 @@ export interface parayan {
   _id: string;
   _createdAt: string;
   title: string;
-  vakta: {
-    name: string;
-    image: string;
-  };
+  vakta: Array[];
   comments: Comment[];
   description: string;
   mainImage: {
@@ -13,11 +10,17 @@ export interface parayan {
       url: string;
     };
   };
-  media: {
+  referenceList: Array[];
+  media: [{
     asset: {
-      url: string;
+      _type: reference;
     };
-  };
+  }];
+  gallery: [{
+    asset: {
+      _type: reference;
+    };
+  }];
   slug: {
     current: string;
   };

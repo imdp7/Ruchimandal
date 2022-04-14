@@ -1,14 +1,23 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import { GetStaticProps } from 'next';
-import { sanityClient, urlFor } from '../../sanity';
+import { sanityClient, urlFor,urlForFile } from '../../sanity';
 import PortableText from 'react-portable-text';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { parayan } from '../../typing';
 import Header from '../../components/Header';
 import ReactAudioPlayer from 'react-audio-player';
 import { FaHeart,FaPlay } from "react-icons/fa";
+import YouTube from 'react-youtube';
 
+
+const opts = {
+  height: '390',
+  width: '640',
+  playerVars: {
+    autoplay: 1,
+  },
+};
 interface IFormInput {
   _id: string;
   name: string;
@@ -16,11 +25,13 @@ interface IFormInput {
   comment: string;
 }
 
+
 interface Props {
   parayan: parayan;
 }
 
 const parayan = ({ parayan }: Props) => {
+
   const [submitted, setSubmitted] = useState(false);
   const {
     register,
@@ -44,6 +55,13 @@ const parayan = ({ parayan }: Props) => {
         setSubmitted(false);
       });
   };
+  const getUrlFromId = (media) => {
+    // Example ref: file-207fd9951e759130053d37cf0a558ffe84ddd1c9-mp3
+    // We don't need the first part, unless we're using the same function for files and images
+    const [_file, id, extension] = media.ref.split('-');
+    return `https://cdn.sanity.io/files/${PROJECT_ID}/${DATASET}/${id}.${extension}`
+  }
+
   return (
     <>
       <Head>
@@ -64,20 +82,24 @@ const parayan = ({ parayan }: Props) => {
           <h2 className="mb-2 text-xl font-light text-gray-500">
             {parayan.description}
           </h2>
+          {parayan.vakta?.map((v) => (
+
+          
           <div className="flex items-center space-x-2">
             <img
               className="h-10 w-10 rounded-full"
-              src={urlFor(parayan.vakta?.image).url()!}
+              src={urlFor(v?.image).url()!}
               alt=""
             />
             <p className="text-sm font-extralight">
               Blog post By{' '}
-              <span className="text-green-700">{parayan.vakta?.name}</span> -
+              <span className="text-green-700">{v?.name}</span> -
               Published at {new Date(parayan._createdAt).toLocaleString()}
             </p>
           </div>
+          ))}
           <div className='flex flex-col'>
-          <div className='flex flex-row items-center justify-between w-full p-3 m-2 flex-wrap bg-red-500 rounded text-white'>
+          {/* <div className='flex flex-row items-center justify-between w-full p-3 m-2 flex-wrap bg-red-500 rounded text-white'>
             <div className='flex items-center space-x-4 cursor-pointer'>
             <FaPlay className='text-xl'/>
               <span>{parayan.vakta?.name}</span>
@@ -89,20 +111,29 @@ const parayan = ({ parayan }: Props) => {
               <div className='flex flex-row rounded-2xl px-6 py-2 items-center text-3xl hover:text-black cursor-pointer'>
               <FaHeart/>
               </div>
-            </div>
+            </div> */}
+           
+           {parayan.vakta?.map((v) => (
+             
           <div className='flex flex-row items-center justify-between w-full p-2 m-2 flex-wrap bg-red-500 rounded text-white'>
+            {parayan.media?.map((a) => (
+              <div>
           <div className='flex items-center space-x-4 cursor-pointer'>
             <FaPlay className='text-xl'/>
-              <span>{parayan.vakta?.name}</span>
+              <span>{v?.name}</span>
               </div>
-              <ReactAudioPlayer
-                src="https://cdn.sanity.io/files/kycw4p6j/production/ede1df285255e4337b35e55679ea949c36aecf82.mp3"
+               <ReactAudioPlayer
+                src={`${a}`}
                 controls
-              />
+                />
               <div className='flex flex-row rounded-2xl px-6 py-2 text-3xl hover:text-black cursor-pointer'>
               <FaHeart/>
               </div>
             </div>
+            ))}
+            </div>
+            
+            ))}
             </div>
 
           <div className="mt-10">
@@ -128,6 +159,39 @@ const parayan = ({ parayan }: Props) => {
               }}
             />
           </div>
+              {parayan.referenceList && (
+          <div className='w-full mt-3'>
+                  <span className='font-extrabold text-black text-2xl'>More Videos</span>
+                  <div className='py-4'>
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+              {parayan.referenceList?.map((v) =>(
+           <div className='py-2 w-full space-x-4'>
+              <YouTube className='w-auto h-auto justify-center' videoId={v} />
+              </div>
+              ))}
+              </div>
+              </div>
+              </div>
+              )}
+                {parayan.gallery && (
+              <div className='w-full mt-3'>
+  <span className='font-extrabold text-black text-2xl'>More Images</span>
+  <div className=" py-2 mx-auto lg:pt-12">
+    <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+        {parayan.gallery?.map((g) => (
+      <div className="flex flex-wrap">
+        <div className="w-full p-1 md:p-2">
+          <img alt="gallery" className="block object-cover object-center w-full h-full rounded-lg"
+            src={`${g}`} />
+        </div>
+      </div>
+        ))}
+      
+    </div>
+  </div>
+  </div>
+  )}
+
         </article>
 
         <hr className="my-5 mx-auto max-w-lg border border-yellow-500" />
@@ -158,7 +222,7 @@ const parayan = ({ parayan }: Props) => {
               <input
                 {...register('name', { required: true })}
                 className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
-                placeholder="name"
+                placeholder="Name"
                 type="text"
               />
             </label>
@@ -167,7 +231,7 @@ const parayan = ({ parayan }: Props) => {
               <input
                 {...register('email', { required: true })}
                 className="form-input mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
-                placeholder="email"
+                placeholder="Email"
                 type="email"
               />
             </label>
@@ -176,7 +240,7 @@ const parayan = ({ parayan }: Props) => {
               <textarea
                 {...register('comment', { required: true })}
                 className="form-textarea mt-1 block w-full rounded border py-2 px-3 shadow outline-none ring-yellow-500 focus:ring"
-                placeholder="comment"
+                placeholder="Comment"
                 rows={8}
               />
             </label>
@@ -256,11 +320,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   _id,
   _createdAt,
   title,
-  vakta -> {
+  vakta[] -> {
     name,
     image
   },
-  media,
+  "media": media[].asset->url,
+  referenceList,
+  "gallery" : gallery.images[].asset -> url,
   "comments": *[
     _type == "comment" &&
     post._ref == ^._id && 

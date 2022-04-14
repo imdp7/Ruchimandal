@@ -13,6 +13,7 @@ interface Props {
 export default function Home({ parayan,katha,vakta }: Props) {
 
   return (
+
     <div className="mx-auto max-w-7xl">
       <Head>
         <title>Ruchimandal</title>
@@ -56,19 +57,12 @@ export default function Home({ parayan,katha,vakta }: Props) {
                   src={urlFor(post.mainImage).url()!}
                   alt=""
                 />
-                <div className="flex justify-between bg-white p-5">
+                <div className="flex justify-center bg-white p-5">
                   <div>
                     <p className="text-lg font-bold">{post.title}</p>
-                    <p>
-                      {post.description} by {post.vakta?.name}
-                    </p>
                   </div>
-                  <img
-                    className="h-12 w-12 rounded-full"
-                    src={urlFor(post.vakta?.image).url()!}
-                    alt=""
-                  />
                 </div>
+                  
               </div>
             </Link>
           );
@@ -79,7 +73,7 @@ export default function Home({ parayan,katha,vakta }: Props) {
       <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
         Vakta
       </div>
-      <div className="grid grid-cols-1 gap-3 p-2 sm:grid-cols-5 md:gap-6 md:p-6">
+      <div className="grid grid-cols-1 gap-3 p-2 sm:grid-cols-5 md:gap-6 md:p-6 rounded-2xl">
       {vakta.map((post) => {
           return (
             <Link key={post._id} href={`/person/${post.slug.current}`}>
@@ -89,7 +83,7 @@ export default function Home({ parayan,katha,vakta }: Props) {
                   src={urlFor(post.image).url()!}
                   alt=""
                 />
-                <div className="flex justify-between bg-white p-5">
+                <div className="flex justify-center bg-white p-5">
                   <div>
                     <p className="text-lg font-bold">{post.name}</p>
 
@@ -137,6 +131,7 @@ export default function Home({ parayan,katha,vakta }: Props) {
         })}
       </div>
     </div>
+
   );
 }
 
@@ -144,7 +139,7 @@ export async function getServerSideProps() {
   const query = `*[_type == "parayan"] {
   _id,
   title,
-  vakta -> {
+  vakta[] -> {
     name,
     image
   },

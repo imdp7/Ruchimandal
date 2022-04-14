@@ -30,6 +30,7 @@ export const sanityClient = createClient(config);
  * Read more: https://www.sanity.io/docs/image-url
  **/
 export const urlFor = (source) => createImageUrlBuilder(config).image(source);
+export const urlForFile = (source) => createFileUrlBuilder(config).file(source);
 
 // Helper function for using the current logged in user account
 export const useCurrentUser = createCurrentUserHook(config);
