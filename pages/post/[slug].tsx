@@ -9,6 +9,9 @@ import Header from '../../components/Header';
 import ReactAudioPlayer from 'react-audio-player';
 import { FaHeart,FaPlay } from "react-icons/fa";
 import YouTube from 'react-youtube';
+import ReactJkMusicPlayer from 'react-jinke-music-player'
+import 'react-jinke-music-player/assets/index.css'
+
 
 
 const opts = {
@@ -31,6 +34,7 @@ interface Props {
 }
 
 const parayan = ({ parayan }: Props) => {
+ 
 
   const [submitted, setSubmitted] = useState(false);
   const {
@@ -98,7 +102,7 @@ const parayan = ({ parayan }: Props) => {
             </p>
           </div>
           ))}
-          <div className='flex flex-col'>
+          <div className='flex flex-row'>
           {/* <div className='flex flex-row items-center justify-between w-full p-3 m-2 flex-wrap bg-red-500 rounded text-white'>
             <div className='flex items-center space-x-4 cursor-pointer'>
             <FaPlay className='text-xl'/>
@@ -115,24 +119,21 @@ const parayan = ({ parayan }: Props) => {
            
            {parayan.vakta?.map((v) => (
              
-          <div className='flex flex-row items-center justify-between w-full p-2 m-2 flex-wrap bg-red-500 rounded text-white'>
+          <div className='flex flex-col justify-between w-full p-2 pl-5 m-2 flex-wrap bg-red-300 rounded-2xl text-white'>
             {parayan.media?.map((a) => (
-              <div>
-          <div className='flex items-center space-x-4 cursor-pointer'>
-            <FaPlay className='text-xl'/>
+              <div className='border border-black rounded-2xl m-2 p-2'>
+          <div className='flex flex-row items-center space-x-4 cursor-pointer'>
+            
               <span>{v?.name}</span>
               </div>
                <ReactAudioPlayer
                 src={`${a}`}
                 controls
                 />
-              <div className='flex flex-row rounded-2xl px-6 py-2 text-3xl hover:text-black cursor-pointer'>
-              <FaHeart/>
-              </div>
+              
             </div>
             ))}
             </div>
-            
             ))}
             </div>
 
@@ -166,7 +167,7 @@ const parayan = ({ parayan }: Props) => {
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {parayan.referenceList?.map((v) =>(
            <div className='py-2 w-full space-x-4'>
-              <YouTube className='w-auto h-auto justify-center' videoId={v} />
+              <YouTube className='w-full h-full object-cover justify-center' videoId={v} />
               </div>
               ))}
               </div>
