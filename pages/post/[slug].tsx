@@ -59,12 +59,12 @@ const parayan = ({ parayan }: Props) => {
         setSubmitted(false);
       });
   };
-  const getUrlFromId = (media) => {
-    // Example ref: file-207fd9951e759130053d37cf0a558ffe84ddd1c9-mp3
-    // We don't need the first part, unless we're using the same function for files and images
-    const [_file, id, extension] = media.ref.split('-');
-    return `https://cdn.sanity.io/files/${PROJECT_ID}/${DATASET}/${id}.${extension}`
-  }
+  // const getUrlFromId = (media) => {
+  //   // Example ref: file-207fd9951e759130053d37cf0a558ffe84ddd1c9-mp3
+  //   // We don't need the first part, unless we're using the same function for files and images
+  //   const [_file, id, extension] = media.ref.split('-');
+  //   return `https://cdn.sanity.io/files/${PROJECT_ID}/${DATASET}/${id}.${extension}`
+  // }
 
   return (
     <>

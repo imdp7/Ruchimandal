@@ -100,7 +100,7 @@ export default function Home({ parayan,katha,vakta }: Props) {
         Latest Katha
       </div>
       <div className="grid grid-cols-1 gap-3 p-2 sm:grid-cols-3 md:gap-6 md:p-6">
-      {katha.map((post) => {
+      {/* {katha.map((post) => {
           return (
             <Link key={post._id} href={`/katha/${post.slug.current}`}>
               <div className="group cursor-pointer overflow-hidden rounded-2xl border">
@@ -128,7 +128,7 @@ export default function Home({ parayan,katha,vakta }: Props) {
               </div>
             </Link>
           );
-        })}
+        })} */}
       </div>
     </div>
 
@@ -164,7 +164,11 @@ export async function getServerSideProps() {
   _id,
   name,
   image,
-  slug
+  slug,
+  vakta -> {
+    name,
+    image
+  },
 }`;
 
   const parayan = await sanityClient.fetch(query);
