@@ -7,10 +7,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { parayan } from '../../typing';
 import Header from '../../components/Header';
 import ReactAudioPlayer from 'react-audio-player';
-import { FaHeart,FaPlay } from "react-icons/fa";
 import YouTube from 'react-youtube';
-import ReactJkMusicPlayer from 'react-jinke-music-player'
 import 'react-jinke-music-player/assets/index.css'
+import Accordation from '../../components/accordation'
 
 
 
@@ -66,6 +65,30 @@ const parayan = ({ parayan }: Props) => {
   //   return `https://cdn.sanity.io/files/${PROJECT_ID}/${DATASET}/${id}.${extension}`
   // }
 
+  const audio =  
+  <div>
+    
+    {parayan.vakta?.map((v) => (
+             
+      <div className='flex flex-col justify-between w-full p-2 m-2 flex-wrap bg-red-300 rounded-2xl text-white'>
+        {parayan.media?.map((a) => (
+          <div className='flex flex-col justify-center border border-black rounded-2xl m-2 p-2 text-center'>
+      <div className='flex flex-row items-center space-x-4 cursor-pointer '>
+        
+          <span>{v?.name}</span>
+          </div>
+           <ReactAudioPlayer
+            src={`${a}`}
+            controls
+            className='w-full'
+            />
+          
+        </div>
+        ))}
+        </div>
+        ))}
+</div>
+
   return (
     <>
       <Head>
@@ -79,62 +102,41 @@ const parayan = ({ parayan }: Props) => {
           src={urlFor(parayan.mainImage).url()!}
           alt=""
         />
-          <div className='flex m-2 justify-center bg-black text-white p-3 rounded-lg shadow-2xl'>
-          <h1 className="mt-3 mb-3 text-3xl">{parayan.title}</h1>
+          <div className='flex m-2 justify-center bg-black text-white p-3 text-center rounded-lg shadow-2xl'>
+          <h1 className="mt-3 mb-3 text-3xl">{parayan?.title}</h1>
           </div>
-        <article className="mx-auto max-w-3xl p-5">
+        <article className="mx-auto max-w-5xl p-5">
           <h2 className="mb-2 text-xl font-light text-gray-500">
             {parayan.description}
           </h2>
-          {parayan.vakta?.map((v) => (
 
           
-          <div className="flex items-center space-x-2">
-            <img
+          <div className="flex items-center space-x-2 md:flex-wrap text-center flex-col w-full">
+            {/* <img
               className="h-10 w-10 rounded-full"
               src={urlFor(v?.image).url()!}
               alt=""
-            />
-            <p className="text-sm font-extralight">
-              Blog post By{' '}
-              <span className="text-green-700">{v?.name}</span> -
-              Published at {new Date(parayan._createdAt).toLocaleString()}
+              /> */}
+            <p className="text-md font-extralight ">
+              Vakta by{' - '}
+              {parayan.vakta?.map((v) => (
+                <>
+              <span className="text-green-700 font-medium border border-black p-3 m-2 hover:bg-black hover:text-white cursor-pointer">{v?.name} {' '}</span>
+              {/* Published at {new Date(parayan._createdAt).toLocaleString()} */}
+              </>
+              ))}
             </p>
           </div>
-          ))}
-          <div className='flex flex-row'>
-          {/* <div className='flex flex-row items-center justify-between w-full p-3 m-2 flex-wrap bg-red-500 rounded text-white'>
-            <div className='flex items-center space-x-4 cursor-pointer'>
-            <FaPlay className='text-xl'/>
-              <span>{parayan.vakta?.name}</span>
-              </div>
-              <ReactAudioPlayer
-                src="https://cdn.sanity.io/files/kycw4p6j/production/ede1df285255e4337b35e55679ea949c36aecf82.mp3"
-                controls
-              />
-              <div className='flex flex-row rounded-2xl px-6 py-2 items-center text-3xl hover:text-black cursor-pointer'>
-              <FaHeart/>
-              </div>
-            </div> */}
-           
-           {parayan.vakta?.map((v) => (
-             
-          <div className='flex flex-col justify-between w-full p-2 pl-5 m-2 flex-wrap bg-red-300 rounded-2xl text-white'>
-            {parayan.media?.map((a) => (
-              <div className='border border-black rounded-2xl m-2 p-2'>
-          <div className='flex flex-row items-center space-x-4 cursor-pointer'>
-            
-              <span>{v?.name}</span>
-              </div>
-               <ReactAudioPlayer
-                src={`${a}`}
-                controls
-                />
-              
-            </div>
-            ))}
-            </div>
-            ))}
+          
+            {/* AUDIO CONTROL */}
+
+          <div className='w-full mt-3 pb-4 p-2'>
+          <span className='font-extrabold text-black text-2xl space-y-4'>Audio </span>
+          <Accordation audio={audio}/>
+          </div>
+          <div className='grid grid-cols-1 gap-2 md:grid-cols-2'>
+
+
             </div>
 
           <div className="mt-10">
@@ -161,12 +163,12 @@ const parayan = ({ parayan }: Props) => {
             />
           </div>
               {parayan.referenceList && (
-          <div className='w-full mt-3'>
+          <div className='w-full mt-3 p-2'>
                   <span className='font-extrabold text-black text-2xl'>More Videos</span>
                   <div className='py-4'>
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
               {parayan.referenceList?.map((v) =>(
-           <div className='py-2 w-full space-x-4'>
+           <div className='py-2 w-full space-x-4 h-full'>
               <YouTube className='w-full h-full object-cover justify-center' videoId={v} />
               </div>
               ))}
@@ -175,7 +177,7 @@ const parayan = ({ parayan }: Props) => {
               </div>
               )}
                 {parayan.gallery && (
-              <div className='w-full mt-3'>
+              <div className='w-full mt-3 p-2'>
   <span className='font-extrabold text-black text-2xl'>More Images</span>
   <div className=" py-2 mx-auto lg:pt-12">
     <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
