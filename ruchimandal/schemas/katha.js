@@ -19,9 +19,12 @@ export default {
       },
       {
         name: 'vakta',
-        title: 'vakta',
-        type: 'reference',
-        to: {type: 'vakta'},
+        title: 'Vakta',
+        type: 'array',
+        of: [{type: 'reference', to: {type: 'vakta'}}],
+        options: {
+          layout: 'vakta'
+        }
       },
       {
         name: 'mainImage',

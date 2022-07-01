@@ -11,13 +11,14 @@ import {
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css';
 
-const days = [1, 2, 3, 4, 5]
 
+const days = [1, 2, 3, 4, 5]
+const shift = ["Morning","Evening"]
 
 export default function Accordation({audio}) {
     return (
-        <div>
-        <Accordion TransitionProps={{ unmountOnExit: true }}>
+        <div className='p-3 m-2'>
+        <Accordion TransitionProps={{ unmountOnExit: true }} allowMultipleExpanded="true" allowZeroExpanded="true">
             {days.map(acc => (
 
            
@@ -27,10 +28,19 @@ export default function Accordation({audio}) {
                        Day {" "} {acc}
                     </AccordionItemButton>
                 </AccordionItemHeading>
-                <AccordionItemPanel>
-                    <p>
-                        {audio}
-                    </p>
+            <AccordionItemPanel>
+                    {shift.map(s => (
+                        <AccordionItem>
+                    <AccordionItemHeading>
+                        <AccordionItemButton>
+                            {s}
+                        </AccordionItemButton>
+                    </AccordionItemHeading>
+                        <AccordionItemPanel>
+                            <p>{audio}</p>
+                            </AccordionItemPanel>
+                            </AccordionItem>
+                        ))}
                 </AccordionItemPanel>
             </AccordionItem>
              ))}
@@ -38,3 +48,4 @@ export default function Accordation({audio}) {
         </div>
     );
 }
+

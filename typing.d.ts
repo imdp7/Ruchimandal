@@ -11,15 +11,22 @@ export interface parayan {
     };
   };
   referenceList: Array[];
+  categories:[{
+    title:string;
+    slug:string;
+    _type:reference;
+  }];
   media: [{
     asset: {
       _type: reference;
     };
+    categories:[{
+      title: string;
+    }];
   }];
   gallery: [{
-    asset: {
-      _type: reference;
-    };
+   _id: string;
+   url: string;
   }];
   slug: {
     current: string;
@@ -34,6 +41,17 @@ export interface vakta {
   slug: {
     current: string;
   };
+}
+
+export interface banners {
+  _id: string;
+  name: string;
+  image: string;
+  referenceList: string;
+  slug: {
+    current: string;
+  };
+  
 }
 
 export interface Comment {

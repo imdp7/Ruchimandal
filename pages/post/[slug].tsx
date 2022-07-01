@@ -10,8 +10,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import YouTube from 'react-youtube';
 import 'react-jinke-music-player/assets/index.css'
 import Accordation from '../../components/accordation'
-
-
+import Modals from '../../components/Modal'
 
 const opts = {
   height: '390',
@@ -36,6 +35,30 @@ const parayan = ({ parayan }: Props) => {
  
 
   const [submitted, setSubmitted] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [viewMore, setViewMore] = useState(false);
+
+  const Toggle = () => {
+  setModal(!modal);
+}
+
+const getEnteriesList = (NoOfEntries:any, x: any) => {
+  let entries: any = []
+  for (let i = 1; i<=NoOfEntries; i++) {
+    if (i <=4){
+      entries.push(
+        <p>View More</p>
+      )
+      }else {
+        {viewMore && entries.push(
+          <p>View More</p>
+        )}
+      }
+    }
+    console.log(entries)
+return entries;
+}
+
   const {
     register,
     handleSubmit,
@@ -65,29 +88,45 @@ const parayan = ({ parayan }: Props) => {
   //   return `https://cdn.sanity.io/files/${PROJECT_ID}/${DATASET}/${id}.${extension}`
   // }
 
-  const audio =  
+  const shift = 
+  <>
+  {
+            parayan?.categories?.map((c) => <div className="">
+              {c.title}
+            </div>)
+          }
+</>
+  const audio =   
+    
   <div>
     
     {parayan.vakta?.map((v) => (
              
-      <div className='flex flex-col justify-between w-full p-2 m-2 flex-wrap bg-red-300 rounded-2xl text-white'>
+      <div className='flex flex-col w-full flex-wrap bg-white rounded-2xl text-black'>
         {parayan.media?.map((a) => (
-          <div className='flex flex-col justify-center border border-black rounded-2xl m-2 p-2 text-center'>
-      <div className='flex flex-row items-center space-x-4 cursor-pointer '>
-        
-          <span>{v?.name}</span>
-          </div>
+          <div className='flex flex-col justify-center border border-black rounded-2xl m-2 p-2 space-y-4 align-center'>
+     <div className="flex flex-row justify-start items-center rounded-2xl space-x-2">
+                <img
+              className="h-7 w-7 rounded-full"
+              src={urlFor(v?.image).url()!}
+              alt=""
+              />
+              <span className="text-black font-medium hover:bg-black p-2 hover:text-white hover:rounded-2xl cursor-pointer">{v?.name} {' '}</span>
+              {/* Published at {new Date(parayan._createdAt).toLocaleString()} */}
+              </div>
+          <div>
            <ReactAudioPlayer
             src={`${a}`}
             controls
             className='w-full'
             />
-          
+          </div>
         </div>
         ))}
         </div>
         ))}
-</div>
+</div>  
+
 
   return (
     <>
@@ -95,6 +134,7 @@ const parayan = ({ parayan }: Props) => {
         <title>{parayan.title}</title>
         <link rel="icon" href="/images/logo/medium-1.svg" />
       </Head>
+      
       <div>
         <Header />
         <img
@@ -109,34 +149,40 @@ const parayan = ({ parayan }: Props) => {
           <h2 className="mb-2 text-xl font-light text-gray-500">
             {parayan.description}
           </h2>
-
+        {parayan.vakta && (
           
           <div className="flex items-center space-x-2 md:flex-wrap text-center flex-col w-full">
-            {/* <img
+            <p className="text-md font-extralight ">
+              Vakta by{' - '}
+              <div className="flex flex-row flex-wrap">
+              {parayan.vakta?.map((v) => (
+                <div className="flex flex-row justify-center items-center border rounded-2xl border-black space-x-2 p-2 m-2">
+                <img
               className="h-10 w-10 rounded-full"
               src={urlFor(v?.image).url()!}
               alt=""
-              /> */}
-            <p className="text-md font-extralight ">
-              Vakta by{' - '}
-              {parayan.vakta?.map((v) => (
-                <>
-              <span className="text-green-700 font-medium border border-black p-3 m-2 hover:bg-black hover:text-white cursor-pointer">{v?.name} {' '}</span>
+              />
+              <span className="text-green-700 font-medium hover:bg-black p-2 hover:text-white hover:rounded-2xl cursor-pointer">{v?.name} {' '}</span>
               {/* Published at {new Date(parayan._createdAt).toLocaleString()} */}
-              </>
+              </div>
               ))}
+              </div>
             </p>
           </div>
-          
-            {/* AUDIO CONTROL */}
+          )}
 
-          <div className='w-full mt-3 pb-4 p-2'>
-          <span className='font-extrabold text-black text-2xl space-y-4'>Audio </span>
-          <Accordation audio={audio}/>
+
+            {/* AUDIO CONTROL */}
+          {parayan.media && (
+          <div className='w-full mt-3 p-2'>
+          <span className='font-extrabold text-black text-2xl p-3'>Audio </span>
+          <Accordation audio={audio} />
           </div>
+            )}
+
           <div className='grid grid-cols-1 gap-2 md:grid-cols-2'>
 
-
+          
             </div>
 
           <div className="mt-10">
@@ -162,13 +208,13 @@ const parayan = ({ parayan }: Props) => {
               }}
             />
           </div>
-              {parayan.referenceList && (
+              {parayan?.referenceList && (
           <div className='w-full mt-3 p-2'>
                   <span className='font-extrabold text-black text-2xl'>More Videos</span>
                   <div className='py-4'>
                     <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-              {parayan.referenceList?.map((v) =>(
-           <div className='py-2 w-full space-x-4 h-full'>
+              {parayan?.referenceList?.map((v) =>(
+           <div className='py-2 w-full space-x-4 h-2xl'>
               <YouTube className='w-full h-full object-cover justify-center' videoId={v} />
               </div>
               ))}
@@ -181,12 +227,17 @@ const parayan = ({ parayan }: Props) => {
   <span className='font-extrabold text-black text-2xl'>More Images</span>
   <div className=" py-2 mx-auto lg:pt-12">
     <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
-        {parayan.gallery?.map((g) => (
-      <div className="flex flex-wrap">
-        <div className="w-full p-1 md:p-2">
+        {parayan?.gallery?.map((g) => (
+      <div className="flex flex-wrap cursor-pointer">
+        <div className="w-full p-1 md:p-2" key={g?._id}>
           <img alt="gallery" className="block object-cover object-center w-full h-full rounded-lg"
-            src={`${g}`} />
+             onClick={() => Toggle()}
+            src={`${g.url}`} />
         </div>
+        <div>
+        <Modals show={modal} close={Toggle} links={g?.url} key={g?.url}/>
+        </div>
+        
       </div>
         ))}
       
@@ -194,7 +245,7 @@ const parayan = ({ parayan }: Props) => {
   </div>
   </div>
   )}
-
+    
         </article>
 
         <hr className="my-5 mx-auto max-w-lg border border-yellow-500" />
@@ -273,6 +324,7 @@ const parayan = ({ parayan }: Props) => {
         )}
 
         {/* Comments */}
+        {parayan.comments && (
         <div className="my-10 mx-auto flex max-w-2xl flex-col space-y-2 p-10 shadow  shadow-yellow-500">
           <h3 className="text-4xl">Comments</h3>
           <hr className="pb-2" />
@@ -288,7 +340,9 @@ const parayan = ({ parayan }: Props) => {
             );
           })}
         </div>
+        )}
       </div>
+      
     </>
   );
 };
@@ -329,12 +383,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   },
   "media": media[].asset->url,
   referenceList,
-  "gallery" : gallery.images[].asset -> url,
+  "gallery" : gallery.images[].asset -> {url,_id},
   "comments": *[
     _type == "comment" &&
     post._ref == ^._id && 
     approved == true
   ],
+  categories[] -> {
+    title,
+    slug
+  },
   description,
   mainImage,
   slug,
@@ -360,3 +418,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     revalidate: 60,
   };
 };
+function render(arg0: JSX.Element) {
+  throw new Error('Function not implemented.');
+}
+

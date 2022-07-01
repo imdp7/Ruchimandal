@@ -47,9 +47,51 @@ export default {
       type: 'array',
       of: [
         {type: 'file', to: {type: 'category'}}
-      ]
-      
+      ],
+      options: {
+        layout: 'categories'
+      },
     },
+      
+    // {
+    //   name: 'media',
+    //   type: 'object',
+    //   title: 'Upload File',
+    //   fields: [
+    //     {
+    //       name: 'files',
+    //       type: 'array',
+    //       title: 'Files',
+    //       of: [
+    //         {
+    //           name: 'file',
+    //           type: 'file',
+    //           title: 'File',
+    //           options: {
+    //             hotspot: true,
+    //           },
+    //         },
+    //         {
+    //           name:'category',
+    //           type: 'array',
+    //           title:'Category',
+    //           of: [{type:'reference', to: {type:'category'}}],
+    //         },
+    //       ],
+    //     },
+        
+    //   ],
+    // },
+    // {
+    //   name: 'categories',
+    //   title: 'Categories',
+    //   type: 'array',
+    //   of: [{type: 'reference', to: {type: 'category'}}],
+    //   options: {
+    //     layout: 'categories'
+    //   }
+    // },
+    
 
   //   {
   //     title: 'Upload File',
@@ -76,15 +118,7 @@ export default {
       of: [{type: 'string'}],
       
     },
-    {
-      name: 'categories',
-      title: 'Categories',
-      type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
-      options: {
-        layout: 'categories'
-      }
-    },
+   
     {
       name: 'publishedAt',
       title: 'Published at',

@@ -2,15 +2,17 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Header from '../components/Header';
 import { sanityClient, urlFor } from '../sanity';
-import { parayan,vakta } from '../typing';
+import { parayan,vakta,banners } from '../typing';
+import YouTube from 'react-youtube';
 
 interface Props {
   parayan: [parayan];
   katha: [parayan];
-  vakta:[vakta]
+  vakta:[vakta];
+  banners: [banners];
 }
 
-export default function Home({ parayan,katha,vakta }: Props) {
+export default function Home({ parayan,katha,vakta,banners }: Props) {
 
   return (
 
@@ -42,7 +44,22 @@ export default function Home({ parayan,katha,vakta }: Props) {
           className="hidden h-32 px-10 md:inline-flex"
         />
       </div>
-
+      {banners && (
+          <div className='w-full'>
+            <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
+              Latest Updates
+            </div>
+                  <div className='py-4'>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {banners?.map((v) => (
+           <div className='py-2 w-full space-x-4 h-2xl'>
+              <YouTube className='w-full h-full object-cover justify-center' videoId={v.referenceList} />
+              </div>
+              ))}
+              </div>
+              </div>
+              </div>
+              )}
       {/* Posts */}
       <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
         Parayan
@@ -96,11 +113,11 @@ export default function Home({ parayan,katha,vakta }: Props) {
       </div>
 
       {/* Katha */}
-      <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
+      {/* <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
         Latest Katha
       </div>
       <div className="grid grid-cols-1 gap-3 p-2 sm:grid-cols-3 md:gap-6 md:p-6">
-      {/* {katha.map((post) => {
+      {katha.map((post) => {
           return (
             <Link key={post._id} href={`/katha/${post.slug.current}`}>
               <div className="group cursor-pointer overflow-hidden rounded-2xl border">
@@ -128,8 +145,8 @@ export default function Home({ parayan,katha,vakta }: Props) {
               </div>
             </Link>
           );
-        })} */}
-      </div>
+        })}
+      </div> */}
     </div>
 
   );
@@ -171,11 +188,18 @@ export async function getServerSideProps() {
   },
 }`;
 
+  const query_3 = `*[_type == "banners"] {
+  _id,
+  slug,
+  referenceList
+}`;
+
   const parayan = await sanityClient.fetch(query);
   const katha = await sanityClient.fetch(query_1);
   const vakta = await sanityClient.fetch(query_2);
+  const banners = await sanityClient.fetch(query_3);
 
   return {
-    props: { parayan,katha,vakta },
+    props: { parayan,katha,vakta,banners },
   };
 }
