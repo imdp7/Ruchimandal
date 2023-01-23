@@ -5,7 +5,7 @@ import { sanityClient, urlFor,urlForFile } from '../../sanity';
 import PortableText from 'react-portable-text';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { parayan } from '../../typing';
-import Header from '../../components/Header';
+import TopNavigations from '../../components/Header';
 import ReactAudioPlayer from 'react-audio-player';
 import YouTube from 'react-youtube';
 import 'react-jinke-music-player/assets/index.css'
@@ -13,8 +13,8 @@ import Accordation from '../../components/accordation'
 import Modals from '../../components/Modal'
 
 const opts = {
-  height: '390',
-  width: '640',
+  height: '900',
+  width: '1200',
   playerVars: {
     autoplay: 1,
   },
@@ -134,9 +134,9 @@ return entries;
         <title>{parayan.title}</title>
         <link rel="icon" href="/images/logo/medium-1.svg" />
       </Head>
-      
+      <TopNavigations />
       <div>
-        <Header />
+
         <img
           className="h-80 w-full object-cover "
           src={urlFor(parayan.mainImage).url()!}
@@ -210,9 +210,14 @@ return entries;
           </div>
               {parayan?.referenceList && (
           <div className='w-full mt-3 p-2'>
-                  <span className='font-extrabold text-black text-2xl'>More Videos</span>
+                  <span className='font-extrabold text-black text-2xl'>Videos</span>
                   <div className='py-4'>
-                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2" width={1200}
+        height={400}
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+        }}>
               {parayan?.referenceList?.map((v) =>(
            <div className='py-2 w-full space-x-4 h-2xl'>
               <YouTube className='w-full h-full object-cover justify-center' videoId={v} />

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import Header from '../components/Header';
+import TopNavigations from '../components/Header';
 import { sanityClient, urlFor } from '../sanity';
 import { parayan,vakta,banners } from '../typing';
 import YouTube from 'react-youtube';
@@ -12,21 +12,30 @@ interface Props {
   banners: [banners];
 }
 
+const opts = {
+  width: '100%',
+  height:"100%",
+};
+
+
 export default function Home({ parayan,katha,vakta,banners }: Props) {
 
   return (
 
-    <div className="mx-auto max-w-7xl">
+    <div>
       <Head>
         <title>Ruchimandal</title>
         <link rel="icon" href="https://cdn.sanity.io/images/kycw4p6j/production/513847cf48e44304ff41404142763e5f5df07472-512x512.png" />
         <script src="https://kit.fontawesome.com/e03f9c38e2.js"></script>
 
       </Head>
-      <Header />
+      <div id="h" style={{ position: 'sticky', top: 0, zIndex: 1002 }}>
+        <TopNavigations />
+      </div>
+      
 
-      <div className="flex items-center justify-between border-y border-black bg-yellow-400 py-10 lg:py-12">
-        <div className="space-y-5 px-10">
+      <div className="flex items-center justify-between border-y border-black bg-yellow-400 py-10 p-2 lg:py-12">
+        <div className="p-4 m-4">
           <h1 className="max-w-xl font-serif text-6xl">
             <span className="underline decoration-black decoration-4">
               Ruchimandal
@@ -41,10 +50,10 @@ export default function Home({ parayan,katha,vakta,banners }: Props) {
 
         <img
           src="/images/logo/medium-1.svg"
-          className="hidden h-32 px-10 md:inline-flex"
+          className="hidden h-32 m-4  md:inline-flex"
         />
       </div>
-      {banners && (
+      {/*{banners && (
           <div className='w-full'>
             <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
               Latest Updates
@@ -52,14 +61,14 @@ export default function Home({ parayan,katha,vakta,banners }: Props) {
                   <div className='py-4'>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {banners?.map((v) => (
-           <div className='py-2 w-full space-x-4 h-2xl'>
-              <YouTube className='w-full h-full object-cover justify-center' videoId={v.referenceList} />
+           <div>
+              <YouTube className='w-full h-full object-cover justify-center' videoId={v.referenceList} opts={opts}/>
               </div>
               ))}
               </div>
               </div>
               </div>
-              )}
+              )}*/}
       {/* Posts */}
       <div className='flex flex-row justify-center bg-black p-2 m-2 text-white rounded shadow-md font-bold text-2xl'>
         Parayan
@@ -68,7 +77,7 @@ export default function Home({ parayan,katha,vakta,banners }: Props) {
         {parayan.map((post) => {
           return (
             <Link key={post._id} href={`/post/${post.slug.current}`}>
-              <div className="group cursor-pointer overflow-hidden rounded-lg border">
+              <div className="group cursor-pointer overflow-hidden rounded-lg border ">
                 <img
                   className="h-60 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105"
                   src={urlFor(post.mainImage).url()!}
